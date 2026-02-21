@@ -12,4 +12,3 @@ class CalorieViewModel : ViewModel() {
         calorieGoal.value += 100
     }
 }
-
