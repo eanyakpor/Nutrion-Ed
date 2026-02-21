@@ -29,4 +29,3 @@ fun HomeScreen(viewModel: CalorieViewModel) {
         }
     }
 }
-
