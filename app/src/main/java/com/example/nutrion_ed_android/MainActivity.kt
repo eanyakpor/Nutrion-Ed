@@ -3,44 +3,38 @@ package com.example.nutrion_ed_android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.compose.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nutrion_ed_android.ui.screens.HomeScreen
+import com.example.nutrion_ed_android.viewmodel.CalorieViewModel
+import com.example.nutrion_ed_android.viewmodel.MealViewModel
 import com.example.nutrion_ed_android.ui.theme.NutrionEdAndroidTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
+
         setContent {
+
             NutrionEdAndroidTheme {
-                // A surface container using the 'background' color from the theme
+
+                val calorieViewModel: CalorieViewModel = viewModel()
+                val mealViewModel: MealViewModel = viewModel()
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    HomeScreen(calorieViewModel, mealViewModel)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NutrionEdAndroidTheme {
-        Greeting("Android")
     }
 }
