@@ -3,7 +3,7 @@ package com.example.nutrion_ed_android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.compose.enableEdgeToEdge
+//import androidx.activity.compose.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
@@ -14,12 +14,13 @@ import com.example.nutrion_ed_android.viewmodel.CalorieViewModel
 import com.example.nutrion_ed_android.viewmodel.MealViewModel
 import com.example.nutrion_ed_android.ui.theme.NutrionEdAndroidTheme
 
+
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
 
         setContent {
 
