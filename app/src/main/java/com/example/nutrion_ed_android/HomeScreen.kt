@@ -1,4 +1,4 @@
-package com.example.nutrion_ed_android.ui.screens
+package com.example.nutrion_ed_android
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -15,6 +15,7 @@ import com.example.nutrion_ed_android.viewmodel.CalorieViewModel
 import com.example.nutrion_ed_android.viewmodel.MealViewModel
 import java.time.LocalDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     calorieViewModel: CalorieViewModel,

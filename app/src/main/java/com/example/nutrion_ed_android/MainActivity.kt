@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nutrion_ed_android.ui.screens.HomeScreen
 import com.example.nutrion_ed_android.viewmodel.CalorieViewModel
 import com.example.nutrion_ed_android.viewmodel.MealViewModel
 import com.example.nutrion_ed_android.ui.theme.NutrionEdAndroidTheme
