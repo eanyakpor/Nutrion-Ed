@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomChart(
+fun NutritionGraph(
     barValue: List<Float>,
     xAxisScale: List<String>,
     totalAmount: Int

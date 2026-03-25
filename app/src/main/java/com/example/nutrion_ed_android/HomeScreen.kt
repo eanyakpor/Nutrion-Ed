@@ -14,27 +14,49 @@ import com.example.nutrion_ed_android.model.Meal
 import com.example.nutrion_ed_android.viewmodel.CalorieViewModel
 import com.example.nutrion_ed_android.viewmodel.MealViewModel
 import java.time.LocalDateTime
+import com.example.nutrion_ed_android.NutritionGraph
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     calorieViewModel: CalorieViewModel,
     mealViewModel: MealViewModel
 ) {
-
     val goal by calorieViewModel.calorieGoal
     val totalCalories = mealViewModel.totalCalories()
+    val meals = mealViewModel.meals
+
+    val days = listOf(
+        "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"
+    )
+
+    val caloriesByDay = listOf(
+        meals.filter { it.time.dayOfWeek.name == "SUNDAY" }.sumOf { it.calories }.toFloat(),
+        meals.filter { it.time.dayOfWeek.name == "MONDAY" }.sumOf { it.calories }.toFloat(),
+        meals.filter { it.time.dayOfWeek.name == "TUESDAY" }.sumOf { it.calories }.toFloat(),
+        meals.filter { it.time.dayOfWeek.name == "WEDNESDAY" }.sumOf { it.calories }.toFloat(),
+        meals.filter { it.time.dayOfWeek.name == "THURSDAY" }.sumOf { it.calories }.toFloat(),
+        meals.filter { it.time.dayOfWeek.name == "FRIDAY" }.sumOf { it.calories }.toFloat(),
+        meals.filter { it.time.dayOfWeek.name == "SATURDAY" }.sumOf { it.calories }.toFloat()
+    )
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(text = "Daily Calorie Goal: $goal")
-
         Spacer(modifier = Modifier.height(10.dp))
-
         Text(text = "Calories Consumed: $totalCalories")
+        Spacer(modifier = Modifier.height(20.dp))
+
+        NutritionGraph(
+            barValue = caloriesByDay,
+            xAxisScale = days,
+            totalAmount = goal
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -56,12 +78,11 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        mealViewModel.meals.forEach { meal ->
+        meals.forEach { meal ->
             Text("${meal.name} - ${meal.calories} calories")
         }
     }
 }
-
 fun totalCalories() {
     TODO("Not yet implemented")
 }
@@ -101,6 +122,7 @@ fun HomeScreenContent(
         }
     }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
