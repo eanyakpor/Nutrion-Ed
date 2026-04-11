@@ -39,6 +39,11 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        MacroCarousel(
+            meals = mealViewModel.meals,
+            calorieGoal = goal
+        )
+
         Button(onClick = {
             calorieViewModel.increaseGoal()
         }) {
