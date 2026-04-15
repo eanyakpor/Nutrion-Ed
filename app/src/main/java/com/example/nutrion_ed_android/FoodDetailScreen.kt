@@ -1,6 +1,7 @@
 package com.example.nutrion_ed_android
 
-import androidx.compose.foundation.Image
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -26,16 +27,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Card
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nutrion_ed_android.model.Meal
+import com.example.nutrion_ed_android.viewmodel.CalorieViewModel
+import com.example.nutrion_ed_android.viewmodel.MealViewModel
+import java.time.LocalDateTime
 
 
-
+//@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodDetailScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    calorieViewModel: CalorieViewModel = viewModel(),
+            mealViewModel: MealViewModel = viewModel()
 ) {
-
+    val calGoal by calorieViewModel.calorieGoal
     var foodName by remember { mutableStateOf("Watermelon") }
 
     var servingsEaten by remember { mutableStateOf("2") }
@@ -44,12 +53,19 @@ fun FoodDetailScreen(
     var eatenCalories by remember { mutableStateOf("200") }
     var eatenCarbs by remember { mutableStateOf("52") }
     var eatenProtein by remember { mutableStateOf("280") }
-    var eatenSodium by remember { mutableStateOf("10") }
+    var eatenFat by remember { mutableStateOf("10") }
+
+    val caloriesInt = eatenCalories.toIntOrNull() ?: 0
+    val carbsInt = eatenCarbs.toIntOrNull() ?: 0
+    val proteinInt = eatenProtein.toIntOrNull() ?: 0
+    val fatInt = eatenCalories.toIntOrNull() ?: 0
+
+    val percent = if (calGoal > 0) (caloriesInt * 100) / calGoal else 0
 
     var servingCalories by remember { mutableStateOf("100") }
     var servingCarbs by remember { mutableStateOf("26") }
     var servingProtein by remember { mutableStateOf("140") }
-    var servingSodium by remember { mutableStateOf("5") }
+    var servingFat by remember { mutableStateOf("5") }
 
     Scaffold(
         topBar = {
@@ -111,8 +127,8 @@ fun FoodDetailScreen(
                     onCarbsChange = { eatenCarbs = it },
                     protein = eatenProtein,
                     onProteinChange = { eatenProtein = it },
-                    sodium = eatenSodium,
-                    onSodiumChange = { eatenSodium = it }
+                    fat = eatenFat,
+                    onFatChange = { eatenFat = it }
                 )
 
                 EditableMacroColumn(
@@ -126,8 +142,8 @@ fun FoodDetailScreen(
                     onCarbsChange = { servingCarbs = it },
                     protein = servingProtein,
                     onProteinChange = { servingProtein = it },
-                    sodium = servingSodium,
-                    onSodiumChange = { servingSodium = it }
+                    fat = servingFat,
+                    onFatChange = { servingFat = it }
                 )
             }
 
@@ -144,10 +160,10 @@ fun FoodDetailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                GoalCircleCard("77%", Color(0xFF4A86E8))
-                GoalCircleCard("29%", Color(0xFFF4D03F))
-                GoalCircleCard("29%", Color(0xFFF5B7B1))
-                GoalCircleCard("29%", Color(0xFFA9F5A9))
+                GoalCircleCard(percent, Color(0xFF4A86E8))
+               // GoalCircleCard("29%", Color(0xFFF4D03F))
+                //GoalCircleCard("29%", Color(0xFFF5B7B1))
+                //GoalCircleCard("29%", Color(0xFFA9F5A9))
             }
 
             Spacer(modifier = Modifier.height(18.dp))
@@ -173,8 +189,18 @@ fun FoodDetailScreen(
 
             Button(
                 onClick = {
-                    // Save the manually entered food data here
-                },
+                    mealViewModel.addMeal(
+                        Meal(
+                            name = foodName,
+                            calories = caloriesInt,
+                            protein = proteinInt,
+                            carbs = carbsInt,
+                            fat = fatInt,
+                            time = LocalDateTime.now()
+                        )
+                    )
+                    onBack()
+                }, // Save the manually entered food data here
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Save Food")
@@ -198,8 +224,8 @@ fun EditableMacroColumn(
     onCarbsChange: (String) -> Unit,
     protein: String,
     onProteinChange: (String) -> Unit,
-    sodium: String,
-    onSodiumChange: (String) -> Unit
+    fat: String,
+    onFatChange: (String) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -244,9 +270,9 @@ fun EditableMacroColumn(
         )
 
         MacroInputField(
-            label = "Sodium",
-            value = sodium,
-            onValueChange = onSodiumChange,
+            label = "Fat",
+            value = fat,
+            onValueChange = onFatChange,
             textColor = Color(0xFF34A853)
         )
     }
@@ -283,7 +309,7 @@ fun MacroInputField(
 
 @Composable
 fun GoalCircleCard(
-    percent: String,
+    percent: Int,
     ringColor: Color
 ) {
     Card(
@@ -301,7 +327,7 @@ fun GoalCircleCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = percent,
+                    text = percent.toString(),
                     color = ringColor,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
@@ -312,6 +338,7 @@ fun GoalCircleCard(
 }
 
 
+//@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun FoodDetailScreenPreview() {

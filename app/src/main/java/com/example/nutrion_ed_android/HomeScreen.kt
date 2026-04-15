@@ -19,7 +19,8 @@ import java.time.LocalDateTime
 @Composable
 fun HomeScreen(
     calorieViewModel: CalorieViewModel,
-    mealViewModel: MealViewModel
+    mealViewModel: MealViewModel,
+    onOpenFoodDetail: () -> Unit
 ) {
 
     val goal by calorieViewModel.calorieGoal
@@ -56,8 +57,13 @@ fun HomeScreen(
             mealViewModel.addMeal(
                 Meal("Apple", 95, 0, 25, 0, LocalDateTime.now())
             )
-        }) {
+        }
+        ) {
             Text("Add Apple")
+        }
+
+        Button(onClick = onOpenFoodDetail) {
+            Text("Add Food")
         }
 
         Spacer(modifier = Modifier.height(20.dp))
