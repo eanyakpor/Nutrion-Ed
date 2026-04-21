@@ -17,43 +17,76 @@ fun NutritionGraph(
     totalAmount: Int,
     barColor: Color
 ) {
+    val yLabels = listOf(
+        totalAmount,
+        (totalAmount * 0.75).toInt(),
+        (totalAmount * 0.50).toInt(),
+        (totalAmount * 0.25).toInt(),
+        0
+    )
+
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Canvas(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
+                .height(200.dp)
         ) {
-            val canvasWidth = size.width
-            val canvasHeight = size.height
+            Column(
+                modifier = Modifier
+                    .width(50.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.End
+            ) {
+                yLabels.forEach { label ->
+                    Text(text = label.toString())
+                }
+            }
 
-            if (barValue.isEmpty() || totalAmount == 0) return@Canvas
+            Spacer(modifier = Modifier.width(8.dp))
 
-            val barWidth = canvasWidth / (barValue.size * 2)
+            Canvas(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            ) {
+                val canvasWidth = size.width
+                val canvasHeight = size.height
 
-            barValue.forEachIndexed { index, value ->
-                val barHeight = (value / totalAmount) * canvasHeight
-                val xStart = index * barWidth * 2 + barWidth / 2
-                val yStart = canvasHeight - barHeight
+                if (barValue.isEmpty() || totalAmount == 0) return@Canvas
 
-                drawRect(
-                    color = barColor,
-                    topLeft = Offset(xStart, yStart),
-                    size = androidx.compose.ui.geometry.Size(barWidth, barHeight)
-                )
+                val barWidth = canvasWidth / (barValue.size * 2)
+
+                barValue.forEachIndexed { index, value ->
+                    val barHeight = (value / totalAmount) * canvasHeight
+                    val xStart = index * barWidth * 2 + barWidth / 2
+                    val yStart = canvasHeight - barHeight
+
+                    drawRect(
+                        color = barColor,
+                        topLeft = Offset(xStart, yStart),
+                        size = androidx.compose.ui.geometry.Size(barWidth, barHeight)
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier.fillMaxWidth()
         ) {
-            xAxisScale.forEach { label ->
-                Text(text = label)
+            Spacer(modifier = Modifier.width(58.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                xAxisScale.forEach { label ->
+                    Text(text = label)
+                }
             }
         }
     }

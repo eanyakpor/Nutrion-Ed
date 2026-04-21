@@ -8,7 +8,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.unit.dp
 import com.example.nutrion_ed_android.model.Meal
 import androidx.compose.ui.graphics.Color
@@ -17,7 +16,10 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun MacroCarousel(
     meals: List<Meal>,
-    calorieGoal: Int
+    calorieGoal: Int,
+    proteinGoal: Int,
+    carbsGoal: Int,
+    fatGoal: Int
 ) {
     val days = listOf(
         "S", "M", "T", "W", "T", "F", "S"
@@ -85,9 +87,9 @@ fun MacroCarousel(
     )
     val pageMax = listOf(
         calorieGoal,
-        200, // temporary max for protein
-        300, // temporary max for carbs
-        100  // temporary max for fat
+        proteinGoal,
+        carbsGoal,
+        fatGoal
     )
 
     val pagerState = rememberPagerState(pageCount = { pageTitles.size })
